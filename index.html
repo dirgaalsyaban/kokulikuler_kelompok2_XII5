@@ -1102,6 +1102,111 @@
             border-color: #444;
             color: #e0e0e0;
         }
+
+        /* Quiz styles */
+        .quiz-section {
+            margin: 4rem 0;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: visible;
+            background-image: radial-gradient(circle at 8% 12%, rgba(243,156,18,0.05) 0 6px, transparent 6px), radial-gradient(circle at 92% 88%, rgba(44,62,80,0.03) 0 6px, transparent 6px);
+            background-size: 72px 72px, 100px 100px;
+        }
+
+        /* Ornamental corners using pseudo-elements (small batik hints) */
+        .quiz-section::before,
+        .quiz-section::after {
+            content: '';
+            position: absolute;
+            width: 86px;
+            height: 86px;
+            opacity: 0.95;
+            pointer-events: none;
+            background-repeat: no-repeat;
+            background-size: contain;
+            filter: saturate(0.95) brightness(1.02);
+        }
+
+        .quiz-section::before {
+            left: -18px;
+            top: -18px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%23f39c12"><path d="M10 90 C30 60, 60 30, 90 10 L90 0 L80 0 C50 30, 20 60, 0 90 Z"/></g></svg>');
+            transform: rotate(-10deg);
+            opacity: 0.9;
+        }
+
+        .quiz-section::after {
+            right: -18px;
+            bottom: -18px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%232c3e50"><path d="M90 10 C60 30, 30 60, 10 90 L0 90 L0 80 C30 50, 60 20, 90 0 Z"/></g></svg>');
+            transform: rotate(10deg) scale(0.95);
+            opacity: 0.08;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .quiz-ornaments { display:flex; gap:8px; align-items:center; }
+        .quiz-ornaments svg { opacity: 0.95; transform-origin:center; }
+        .quiz-ornaments .orn-left { transform: translateY(2px) rotate(-8deg); }
+        .quiz-ornaments .orn-right { transform: translateY(2px) rotate(6deg); }
+
+        .quiz-card {
+            padding: 18px;
+            border-radius: 8px;
+            background: linear-gradient(180deg,#fff,#fbfbff);
+            border: 1px solid #eef2f8;
+            position: relative;
+        }
+
+        .quiz-question {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .quiz-option {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #dbe7f0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.18s;
+            text-align: left;
+        }
+
+        .quiz-option:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+
+        .quiz-option.correct { background: #e8f7ea; border-color: #27ae60; }
+        .quiz-option.wrong { background: #fff1f1; border-color: #e74c3c; }
+
+        .quiz-controls { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:12px; }
+
+        .quiz-btn { padding: 8px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; }
+        .quiz-btn.primary { background: var(--accent); color: white; }
+        .quiz-btn.secondary { background: #f1f5f8; color: var(--primary); border:1px solid #e6eef6; }
+
+        .quiz-progress { font-size: 0.95rem; color: var(--text-light); }
+
+        @media (max-width:768px) { .quiz-options { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -1117,6 +1222,7 @@
                     <li><a href="#home">Beranda</a></li>
                     <li><a href="#categories">Kategori</a></li>
                     <li><a href="#cultural">Budaya</a></li>
+                    <li><a href="#quiz">Quiz</a></li>
                     <li><a href="#about">Tentang</a></li>
                     <button class="theme-toggle" title="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
                     <div id="favIndicator" class="fav-indicator" title="Lihat Favorit" style="margin-left:18px; cursor:pointer;">
@@ -1232,6 +1338,46 @@
             <div class="items-container" id="culturalItems">
                 <!-- Cultural items will be loaded by JavaScript -->
             </div>
+
+            <!-- Quiz Section -->
+            <section class="quiz-section" id="quiz">
+                <div class="quiz-header">
+                    <div class="quiz-ornaments" aria-hidden="true">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="orn-left">
+                            <path d="M2 12 C6 6, 12 4, 16 2" stroke="#f39c12" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="6" cy="6" r="1.6" fill="#2c3e50"/>
+                        </svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="orn-right">
+                            <path d="M22 12 C18 18, 12 20, 8 22" stroke="#2c3e50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="18" r="1.6" fill="#f39c12"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="section-title">Quiz Budaya</h2>
+
+                    <div class="quiz-header-controls">
+                        <button id="startQuizBtn" class="quiz-btn primary">Mulai Quiz</button>
+                        <button id="resetHighBtn" class="quiz-btn secondary">Reset Nilai Tertinggi</button>
+                    </div>
+                </div>
+
+                <div class="quiz-card" id="quizCard" style="display:none;">
+                    <div class="quiz-question" id="quizQuestion">Pertanyaan akan muncul di sini</div>
+                    <div class="quiz-options" id="quizOptions"></div>
+                    <div class="quiz-controls">
+                        <div class="quiz-progress" id="quizProgress">0 / 0</div>
+                        <div>
+                            <button id="nextBtn" class="quiz-btn primary" disabled>Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quizResult" style="display:none; margin-top:12px;">
+                    <div style="font-weight:700; font-size:1.05rem;">Hasil Quiz</div>
+                    <div id="quizScore" style="margin-top:8px;">Skor: 0</div>
+                    <div id="quizHigh" style="margin-top:6px; color:var(--text-light);">Nilai tertinggi: -</div>
+                </div>
+            </section>
         </div>
     </section>
 
@@ -2413,7 +2559,7 @@
     title: "Ulee Balang",
     category: "pakaian",
     region: "Aceh",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Ulee_Balang_Aceh.jpg",
+    image: "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2023/08/08/IMG_4769-193612050.jpeg",
     description: "Pakaian kebesaran Raja/Sultan Aceh; ditandai dengan Meukeutop (kopiah) bagi pria dan Daro Baro bagi wanita.",
     detail: "Ulee Balang digunakan pada acara resmi kerajaan Aceh dan perayaan adat, menampilkan hiasan kepala khas dan busana mewah."
 },
@@ -2422,7 +2568,7 @@
     title: "Bundo Kanduang",
     category: "pakaian",
     region: "Sumatera Barat",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/17/Bundo_Kanduang_Minangkabau.jpg",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyv8vxXj13wxm3RvTDtNmQDhbZHKWcK20uolADMEvfTxIZJrNWxzjRYown6jZ6II-lJFwCd14T6cTB_bWyu6LwFgjrvPIv1f7pX9mm-VvxxXXfQeyhCYymf_Y8CPGFU2KhwLY2q4fU5qCyRQpJrhx63WafBvTIggyPoriyzQegd0HuIznfdXfNrCuDxA/w640-h406/IMG-20220427-WA0025.jpg",
     description: "Pakaian adat wanita Minangkabau yang melambangkan kebesaran seorang ibu, dengan hiasan kepala Tingkuluak (Tengkuluk).",
     detail: "Bundo Kanduang digunakan dalam upacara adat dan pernikahan, menunjukkan status sosial dan kehormatan perempuan Minangkabau."
 },
@@ -2431,7 +2577,7 @@
     title: "Teluk Belanga dan Kebaya Labuh",
     category: "pakaian",
     region: "Riau",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/32/Teluk_Belanga_Riau.jpg",
+    image: "https://wahananews.co/photo/berita/dir042022/mengenal-kebaya-labuh-dan-teluk-balanga-pakaian-adat-riau-yang-unik_aL39P17lpR.jpg",
     description: "Pakaian Melayu Riau; Teluk Belanga (pria) berupa kemeja berkerah tanpa saku, Kebaya Labuh (wanita) berupa kebaya panjang.",
     detail: "Digunakan dalam acara resmi dan perayaan adat, menonjolkan keanggunan Melayu Riau."
 },
@@ -2440,7 +2586,7 @@
     title: "Baju Kurung dan Cekak Musang",
     category: "pakaian",
     region: "Kepulauan Riau",
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/85/Baju_Kurung_Cekak_Musang_Riau.jpg",
+    image: "https://www.indonesia.travel/contentassets/4e708a3175dd4bc0b94db7f2e6e42324/baju-cekak.jpg",
     description: "Pakaian khas Kepulauan Riau, sering dilengkapi dengan Tanjak (penutup kepala) untuk pria dan Selendang untuk wanita.",
     detail: "Sering dipakai dalam pesta rakyat atau upacara resmi, menonjolkan ciri khas Melayu Kepulauan Riau."
 },
@@ -2449,7 +2595,7 @@
     title: "Pakaian Adat Melayu Jambi",
     category: "pakaian",
     region: "Jambi",
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/45/Pakaian_Adat_Melayu_Jambi.jpg",
+    image: "https://disbud.kepriprov.go.id/wp-content/uploads/2020/07/kain-dagang.jpg",
     description: "Pakaian dari beludru merah yang dihiasi sulaman benang emas, dilengkapi dengan Mahkota yang mewah.",
     detail: "Biasanya dipakai dalam acara kerajaan, pernikahan adat, dan festival kebudayaan Jambi."
 },
@@ -2458,7 +2604,7 @@
     title: "Aesan Gede / Aesan Paksangko",
     category: "pakaian",
     region: "Sumatera Selatan",
-    image: "https://upload.wikimedia.org/wikipedia/commons/9/9b/Aesan_Gede_Sumatera_Selatan.jpg",
+    image: "https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/10/2023/08/15/Pakaian-Adat-145336392.jpg",
     description: "Pakaian kebesaran Kerajaan Sriwijaya, didominasi warna merah dan emas dengan aksesoris yang rumit.",
     detail: "Aesan Gede dipakai untuk acara kerajaan dan upacara adat besar, melambangkan kebesaran dan kemewahan."
 },
@@ -2467,7 +2613,7 @@
     title: "Pakaian Adat Rejang Lebong",
     category: "pakaian",
     region: "Bengkulu",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/61/Pakaian_Adat_Rejang_Lebong.jpg",
+    image: "https://asset.kompas.com/crops/uqY6u4qk-Qz2f-rVlE_kv8llbi8=/25x19:634x425/1200x800/data/photo/2021/03/16/60506fc949f08.png",
     description: "Menggunakan kain beludru dengan sulaman emas; pria memakai Kopiah Emas dan wanita memakai Mahkota.",
     detail: "Digunakan dalam perayaan adat, pesta rakyat, dan upacara pernikahan di Bengkulu."
 },
@@ -2476,7 +2622,7 @@
     title: "Tulang Bawang",
     category: "pakaian",
     region: "Lampung",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/20/Pakaian_Adat_Lampung_Tulang_Bawang.jpg",
+    image: "https://seringjalan.com/wp-content/uploads/2020/05/Pakaian-Adat-Tradisional-Tulang-Bawang-Lampung-Untuk-Pria.jpg",
     description: "Menggunakan kain tapis (tenun khas Lampung) yang bersulam emas, dilengkapi Siger (mahkota) untuk wanita.",
     detail: "Sering dipakai dalam pernikahan adat dan acara resmi Lampung, menonjolkan keindahan motif tapis."
 },
@@ -2485,7 +2631,7 @@
     title: "Dandanan Care Haji / Abang None",
     category: "pakaian",
     region: "DKI Jakarta",
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/42/Dandanan_Care_Haji_Abang_None.jpg",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhlL3MOm-nQjPHMZNECaeyWKaFlg0TswAers6UiT-WM7r-k49DfSRSo32PDVilSV4see2boh3OHAlv9Vih4xXNKL4hDuajxTnbZkjAZieGD3w4ublcoMXerEFe_iyJhgwqNwk8Yi0-dQMU/s640/pakaian+adat+Betawi+DKI+Jakarta.JPG",
     description: "Pakaian khas Betawi; pria memakai Baju Sadariah, wanita memakai Baju Kurung dan Kerudung.",
     detail: "Digunakan dalam festival budaya Betawi, seperti Festival Ondel-Ondel dan upacara adat."
 },
@@ -2494,7 +2640,7 @@
     title: "Pakaian Adat Sunda (Kebaya Sunda)",
     category: "pakaian",
     region: "Jawa Barat",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/11/Kebaya_Sunda.jpg",
+    image: "https://img.antaranews.com/cache/1200x800/2024/05/11/Mahalini.jpg",
     description: "Pakaian adat yang sederhana namun elegan; Pria memakai Jas Tutup/Beskap dan wanita memakai Kebaya dengan Sanggul.",
     detail: "Dipakai dalam acara adat, pernikahan, dan upacara resmi, menekankan kesederhanaan dan keanggunan Sunda."
 },
@@ -2503,7 +2649,7 @@
     title: "Jawi Jangkep dan Kebaya Jawa",
     category: "pakaian",
     region: "Jawa Tengah",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/56/Jawi_Jangkep_dan_Kebaya_Jawa.jpg",
+    image: "https://www.bahankain.com/storage/photos/shares/Artikel/Isi%20artikel/SEPTEMBER%202023/jawi%20jangkep.webp",
     description: "Jawi Jangkep (pria) terdiri dari Beskap dan Jarikan (kain batik), wanita memakai Kebaya dan Sanggul.",
     detail: "Biasanya dipakai pada acara kerajaan, pernikahan adat, dan festival kebudayaan Jawa Tengah."
 },
@@ -2512,7 +2658,7 @@
     title: "Surjan dan Kebaya Khas Jogja",
     category: "pakaian",
     region: "DI Yogyakarta",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Surjan_dan_Kebaya_Jogja.jpg",
+    image: "https://www.dailysports.id/upload/large/0b480ce6c170722b4f525aa5cbf5a55f.jpg",
     description: "Pria memakai Surjan (lurik berkerah tegak) dan Blangkon, wanita memakai Kebaya Tangkepan.",
     detail: "Digunakan dalam upacara adat, pernikahan keraton, dan festival budaya Yogyakarta."
 },
@@ -2521,7 +2667,7 @@
     title: "Pesa'an",
     category: "pakaian",
     region: "Jawa Timur",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/65/Pesa'an_Madura.jpg",
+    image: "https://thumb.viva.id/vivawisata/325x183/2024/06/20/667367f851d0d-baju-adat-madura_wisata.jpg",
     description: "Pakaian adat Madura; Baju hitam longgar (Pesa'an) dengan Kaos Garis Merah/Putih dan Sarung yang diikatkan.",
     detail: "Biasanya dipakai dalam acara adat Madura, termasuk pernikahan dan festival kebudayaan lokal."
 },
@@ -2530,7 +2676,7 @@
     title: "Payas Agung / Payas Madya",
     category: "pakaian",
     region: "Bali",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Payas_Agung_Bali.jpg",
+    image: "https://asset.kompas.com/crops/CZyBxpgCOHNY1u1zQXHDlC29PpE=/0x0:0x0/750x500/data/photo/buku/6336cf309aa36.jpg",
     description: "Pakaian adat Bali yang sangat mewah dengan mahkota emas (untuk upacara pernikahan/kebesaran).",
     detail: "Dipakai dalam upacara pernikahan kerajaan dan acara keagamaan, menampilkan kemewahan dan detail hiasan emas."
 },
@@ -2539,7 +2685,7 @@
     title: "Pakaian Adat Timor",
     category: "pakaian",
     region: "Nusa Tenggara Timur",
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/7f/Pakaian_Adat_Timor.jpg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqR_9BAbKbg6t9gOkALKNF-TmysmDRlNKoTi2Dlh-hqn6m6Yzc9UD6Aae3&s=10",
     description: "Kain tenun ikat khas NTT, Selendang dan Ti'i Langga (topi jerami unik) untuk pria.",
     detail: "Dipakai dalam upacara adat, tarian tradisional, dan festival budaya NTT."
 },
@@ -2548,7 +2694,7 @@
     title: "King Baba dan King Bibinge",
     category: "pakaian",
     region: "Kalimantan Barat",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/27/Pakaian_Adat_Dayak_Kalbar.jpg",
+    image: "https://sdn13.bimakota.sch.id/upload/kontent/1722424634_decb10644463de1af448.jpeg",
     description: "Pakaian adat Dayak, terbuat dari kulit kayu, dihiasi manik-manik dan bulu burung.",
     detail: "Sering dipakai dalam upacara adat, ritual, dan perayaan budaya Dayak di Kalimantan Barat."
 },
@@ -2557,7 +2703,7 @@
     title: "Baju Adat Nyiru",
     category: "pakaian",
     region: "Kalimantan Tengah",
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/49/Baju_Adat_Nyiru_Kalteng.jpg",
+    image: "https://cdn1-production-images-kly.akamaized.net/y_QKXnyU7qFT8V2vs_ApIS494bU=/1200x675/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/1113391/original/061986400_1453007388-Fedi-Nuril-2016171-2.jpg",
     description: "Pakaian adat Dayak Ngaju, menggunakan Rompi dan Penutup Kepala dengan bulu burung enggang.",
     detail: "Dipakai dalam ritual adat, upacara pernikahan, dan festival kebudayaan Dayak Ngaju."
 },
@@ -2566,7 +2712,7 @@
     title: "Takwo dan Kustin",
     category: "pakaian",
     region: "Kalimantan Timur",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/53/Pakaian_Adat_Dayak_Kaltim.jpg",
+    image: "https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/295/2024/08/17/BUGTflW5sN_copy_750x520-1568563485.jpg",
     description: "Pakaian adat Dayak Kenyah; Takwo (pria) berupa rompi dan celana pendek, Kustin (wanita) berupa kain sarung.",
     detail: "Digunakan pada upacara adat, tarian tradisional, dan ritual komunitas Dayak Kenyah."
 },
@@ -2575,7 +2721,7 @@
     title: "Pakaian Adat Tidung",
     category: "pakaian",
     region: "Kalimantan Utara",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/11/Pakaian_Adat_Tidung.jpg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjVfjCGljWRPjd1EnUUhVMrpKNe1uEe0ec0RYogRV-ww&s=10",
     description: "Menggunakan kain Tenun Batik yang khas, dilengkapi perhiasan dari manik-manik.",
     detail: "Sering dipakai dalam upacara adat, festival budaya, dan acara pernikahan suku Tidung."
 },
@@ -2584,7 +2730,7 @@
     title: "Laku Tepu",
     category: "pakaian",
     region: "Sulawesi Utara",
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/81/Pakaian_Adat_Sangihe_Talaud.jpg",
+    image: "https://seringjalan.com/wp-content/uploads/2020/05/Pakaian-Tradisional-Gorontalo.jpg",
     description: "Pakaian adat Sangihe Talaud; terbuat dari serat pohon, biasanya berwarna cerah dan dilengkapi Mahkota.",
     detail: "Dipakai dalam upacara adat, penyambutan tamu, dan festival budaya di Sulawesi Utara."
 },
@@ -2593,7 +2739,7 @@
     title: "Pakaian Adat Suku Kaili (Nggembe)",
     category: "pakaian",
     region: "Sulawesi Tengah",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Pakaian_Adat_Kaili_Sulteng.jpg",
+    image: "https://katrys-sma.alazharmandiri.sch.id/upload/633ce653e8b7a.png",
     description: "Baju kurung pendek (wanita) dan Baju Koje (pria), dilengkapi kain sarung tenun.",
     detail: "Digunakan dalam acara adat, tarian tradisional, dan perayaan lokal Suku Kaili."
 },
@@ -2602,7 +2748,7 @@
     title: "Kain Tenun Buton",
     category: "pakaian",
     region: "Sulawesi Tenggara",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/30/Pakaian_Adat_Buton.jpg",
+    image: "https://pariwisataindonesia.id/wp-content/uploads/2023/04/Pariwisata-Indonesia-Kamohu.jpg",
     description: "Pakaian adat Buton yang kaya motif tenun, dilengkapi Keris dan Perhiasan Emas.",
     detail: "Dipakai dalam upacara kerajaan, pernikahan, dan festival budaya Buton."
 },
@@ -2611,7 +2757,7 @@
     title: "Biliu dan Makuta",
     category: "pakaian",
     region: "Gorontalo",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Biliu_dan_Makuta_Gorontalo.jpg",
+    image: "https://cdn1-production-images-kly.akamaized.net/d9K5Ht48nfQs0SvhKSqpCo-5nlM=/1280x720/smart/filters:quality(75):strip_icc()/kly-media-production/medias/4242064/original/043703500_1669616409-Screenshot_8.jpg",
     description: "Biliu (wanita) berupa baju kurung sutra, Makuta (pria) berupa jas panjang.",
     detail: "Sering dipakai dalam pesta adat, pernikahan, dan festival budaya Gorontalo."
 },
@@ -2620,7 +2766,7 @@
     title: "Pakaian Adat Mandar",
     category: "pakaian",
     region: "Sulawesi Barat",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/22/Pakaian_Adat_Mandar.jpg",
+    image: "https://img.okezone.com/library/images/2018/07/10/y6blfhxwnjx768podplx_20879.JPG",
     description: "Menggunakan kain sutra dan tenun Mandar, pria memakai Sigara (penutup kepala).",
     detail: "Dipakai pada acara adat, tarian tradisional, dan festival budaya Mandar."
 },
@@ -2629,16 +2775,16 @@
     title: "Baju Cele",
     category: "pakaian",
     region: "Maluku",
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/77/Baju_Cele_Maluku.jpg",
+    image: "https://cerdika.com/wp-content/uploads/2021/03/Baju-Adat-Cele-Pria-Maluku-compressed-760x467.jpg",
     description: "Pakaian berwarna cerah (merah/putih) dengan motif garis-garis kotak, dilengkapi Kebaya dan Kain Sarung tenun.",
     detail: "Digunakan dalam festival, upacara adat, dan pernikahan tradisional Maluku."
 },
 {
     id: 170,
-    title: "Baju Manteren Lamo",
+    title: "Baju Lamo",
     category: "pakaian",
     region: "Maluku Utara",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Baju_Manteren_Lamo.jpg",
+    image: "https://www.selasar.com/wp-content/uploads/2020/08/manteren-lamo-pakaian-adat-maluku.jpg",
     description: "Pakaian adat sultan Ternate/Tidore, menggunakan Jubah Panjang dan Topi Kerucut yang khas.",
     detail: "Dipakai dalam acara kerajaan, upacara adat, dan festival budaya Maluku Utara."
 },
@@ -2656,7 +2802,7 @@
     title: "Pakaian Adat Ewer",
     category: "pakaian",
     region: "Papua Barat",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Pakaian_Adat_Ewer_Papua_Barat.jpg",
+    image: "https://dadisiji.com/wp-content/uploads/2020/10/pakaian-adat-ewer.jpg",
     description: "Pakaian dari kulit kayu dan rumbai-rumbai, dilengkapi Tutup Kepala dari bulu burung kasuari.",
     detail: "Dipakai dalam upacara adat, tarian tradisional, dan festival budaya suku Ewer Papua Barat."
 },
@@ -2665,7 +2811,7 @@
     title: "Variasi Koteka/Holim dan Sali",
     category: "pakaian",
     region: "Papua Pegunungan, Papua Tengah, Papua Selatan, Papua Barat Daya",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/21/Koteka_Holim_Sali_Papua.jpg",
+    image: "https://kicaumania.net/wp-content/uploads/2023/04/Pakaian-Adat-Papua-Koteka.jpg",
     description: "Variasi pakaian adat Papua yang terbuat dari alam, bergantung pada subsuku, seperti Yokal (rok rumbai panjang).",
     detail: "Digunakan dalam ritual adat, upacara perang, pesta panen, dan tarian tradisional di berbagai wilayah Papua."
 },{
@@ -3470,6 +3616,259 @@
         loadCulturalItems();
         renderFavorites();
         updateFavCount();
+        // initialize quiz UI
+        initQuiz();
     });
+
+    /* Quiz implementation */
+    const quizData = [
+        {
+            q: `Tari Saman yang sering ditampilkan dalam kelompok penari memiliki gerakan yang sangat sinkron dan ritmis. Jelaskan provinsi asal tari ini dan salah satu fungsi sosial atau religius dari pertunjukan Tari Saman dalam masyarakat tradisionalnya. Pilih jawaban yang paling lengkap.`,
+            a: [
+                `Aceh — berasal dari dataran Gayo; biasanya dipentaskan untuk merayakan acara keagamaan dan menyampaikan syair berisi pesan sosial atau moral.`,
+                `Jawa — berasal dari keraton; dipentaskan untuk upacara kerajaan dan penyambutan tamu.`,
+                `Bali — berasal dari pura-pura; digunakan untuk ritual keagamaan sehari-hari.`,
+                `Sumatera Barat — berasal dari adat Minangkabau; digunakan dalam upacara pernikahan.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Rumah Gadang memiliki atap melengkung yang khas dan mencerminkan sistem kekerabatan tertentu. Dari provinsi manakah Rumah Gadang berasal, dan sistem kekerabatan apakah yang tercermin pada struktur sosial pemilik rumah tradisional ini?`,
+            a: [
+                `Sumatera Barat — mencerminkan masyarakat matrilineal di Minangkabau.`,
+                `Aceh — mencerminkan masyarakat patrilineal dengan garis keturunan ayah.`,
+                `Sulawesi Selatan — mencerminkan struktur klan patriarki.`,
+                `Nusa Tenggara Timur — mencerminkan masyarakat adat berbasis keluarga luas.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Batik sering disebut sebagai salah satu warisan budaya Indonesia yang kaya motif dan filosofinya. Dari pulau manakah batik tradisional paling dikenal, dan sebutkan dua teknik pembuatan batik yang umum ditemui?`,
+            a: [
+                `Jawa — teknik batik tulis (canting) dan batik cap (stempel tembaga).`,
+                `Sumatera — teknik pewarnaan ikat dan tenun lurik.`,
+                `Bali — teknik ikat dan printing industri.`,
+                `Kalimantan — teknik anyaman dan songket.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Rendang adalah masakan daging yang memerlukan proses memasak lama dengan rempah dan santan. Dari mana asal rendang dan sebutkan satu alasan mengapa rendang bisa tahan lama?`,
+            a: [
+                `Sumatera Barat — karena dimasak hingga kering dengan rempah-rempah dan santan yang mengurangi kadar air, sehingga tahan lebih lama.`,
+                `Bali — karena diawetkan dengan pengasapan secara tradisional.`,
+                `Jawa — karena proses fermentasi bahan makanan.`,
+                `Sulawesi — karena penggunaan garam dalam jumlah besar.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Wayang kulit adalah seni pementasan bayangan yang berkembang di daerah tertentu di Indonesia. Sebutkan pulau utama tempat wayang kulit berkembang dan satu unsur penting yang biasanya mengiringi pertunjukan wayang kulit.`,
+            a: [
+                `Jawa — biasanya diiringi gamelan dan tembang sinden serta dipimpin oleh seorang dalang.`,
+                `Sumatera — biasanya diiringi angklung dan tari.`,
+                `Bali — biasanya diiringi kecak.`,
+                `Kalimantan — biasanya diiringi musik panting.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Tari Kecak di Bali terkenal karena paduan suara "cak" dari puluhan penari laki-laki. Jelaskan asal muasal inspirasi tarian ini dan jelaskan perbedaan utama tampilannya dibandingkan tari-tarian ritual tradisional Bali lainnya.`,
+            a: [
+                `Diilhami dari ritual Sanghyang dan dikembangkan menjadi tontonan koreografis yang menekankan paduan suara penari laki-laki, bukan tari penyembahan di pura yang bersifat sakral.`,
+                `Asal dari desa pedesaan, meniru tarian rakyat Sumatera yang bersifat kompetisi gerak.`,
+                `Terinspirasi langsung dari tarian keraton Jawa dan berfungsi sebagai tarian kerajaan.`,
+                `Dikembangkan dari seni perahu tradisional dan ditampilkan hanya saat panen.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Rumah Honai dengan bentuk bulat dan atap kerucut adalah rumah tradisional suku Dani. Jelaskan satu fungsi struktural desain Honai dalam konteks lingkungan pegunungan dan satu aspek kebiasaan sosial yang terkait dengan penggunaan Honai.`,
+            a: [
+                `Desain melindungi dari hawa dingin pegunungan dengan ruang interior rendah dan atap kerucut; sering dipisah antara honai laki-laki dan perempuan untuk fungsi sosial dan ritual.`,
+                `Desain untuk mengumpulkan air hujan; digunakan sebagai tempat penyimpanan hasil panen saja.`,
+                `Desain untuk menahan badai laut; digunakan sebagai rumah nelayan.`,
+                `Desain untuk sirkulasi udara panas; digunakan sebagai pusat perdagangan.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Salah satu pakaian tradisional yang sering dipakai pada upacara adat di Sulawesi Selatan disebut Baju Bodo. Jelaskan karakteristik utama Baju Bodo dan sebutkan bagaimana warna pakaian ini menginformasikan status atau usia pemakainya.`,
+            a: [
+                `Baju Bodo berbahan tipis seperti muslin, bentuk kotak, dan warna cerah; warna tertentu menandai usia atau status sosial (mis. oranye untuk remaja).`,
+                `Baju Bodo terbuat dari tenunan tebal, dihias perak; semua warna memiliki arti yang sama.`,
+                `Baju Bodo seperti jas formal Barat; warnanya selalu hitam untuk upacara resmi.`,
+                `Baju Bodo adalah pakaian pria untuk bertani; warnanya menandakan musim tanam.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Tari Piring khas Minangkabau menggunakan piring sebagai properti. Jelaskan dua tantangan teknis yang harus dikuasai penari saat menampilkan Tari Piring dan bagaimana tarian ini terkait dengan tradisi masyarakat Minangkabau.`,
+            a: [
+                `Penari harus menjaga keseimbangan piring dan kecepatan gerak tanpa menjatuhkan piring; tari ini berasal dari ritual syukur panen dan kini menjadi pertunjukan adat.`,
+                `Penari harus memainkan alat musik sambil menari; tari ini adalah tarian perang.`,
+                `Penari harus menyeimbangkan obor di kepala; tari ini untuk upacara kuburan.`,
+                `Penari harus berakrobat di atas panggung tinggi; tari ini untuk kompetisi kerajaan.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Ulos merupakan kain tradisional Batak yang dipakai dalam berbagai upacara. Jelaskan makna simbolis dari ulos dalam konteks acara pernikahan atau pemberian restu dan sebutkan satu teknik pembuatan ulos yang menonjolkan nilai estetik ragam motifnya.`,
+            a: [
+                `Ulos melambangkan restu, kehangatan, dan perlindungan; teknik tenun tangan tradisional pada alat tenun bukan mesin menonjolkan motif-motif simbolik.`,
+                `Ulos dipakai sebagai bendera perang; dibuat dengan teknik sablon modern.`,
+                `Ulos hanya dipakai sebagai taplak meja; dibuat dari bahan sintetis.`,
+                `Ulos adalah sejenis pakaian luar yang diproduksi massal untuk turis.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Dalam konteks kuliner tradisional Indonesia, beberapa hidangan memiliki fungsi upacara selain rasa. Ambil contoh Nasi Jaha atau Gudeg: jelaskan fungsi ritual/komunal salah satu dari kedua hidangan tersebut serta bahan pokok utama yang menjadi identitas hidangan tersebut.`,
+            a: [
+                `Gudeg (Yogyakarta) — sering disajikan untuk jamuan adat dan berbahan utama nangka muda yang dimasak lama dengan santan; identik rasa manis.`,
+                `Nasi Jaha (Sulawesi Utara) — dibuat dari beras biasa tanpa santan; biasanya untuk konsumsi harian saja.`,
+                `Gudeg — berbahan utama jagung bakar; dipakai dalam ritual panen.`,
+                `Nasi Jaha — berbahan gandum; tidak memiliki makna ritual.`
+            ],
+            correct: 0
+        },
+        {
+            q: `Amati variasi rumah adat di Indonesia: sebutkan satu perbedaan bentuk atap dan struktur antara Rumah Joglo (Jawa) dan Rumah Tongkonan (Toraja), serta jelaskan satu aspek simbolik atau sosial yang terkait dengan masing-masing rumah.`,
+            a: [
+                `Joglo memiliki atap bertumpuk (tajug) dengan soko guru; melambangkan status sosial dan fungsi keraton/keluarga bangsawan, sementara Tongkonan memiliki atap melengkung menyerupai perahu dan menandakan hubungan leluhur serta status keluarga di masyarakat Toraja.`,
+                `Joglo berbentuk bulat dan kecil; Tongkonan adalah rumah panggung rendah dan tanpa simbol sosial.`,
+                `Keduanya identik bentuk dan fungsi; tidak ada perbedaan struktural.`,
+                `Joglo digunakan hanya sebagai gudang; Tongkonan hanya untuk upacara pernikahan.`
+            ],
+            correct: 0
+        }
+    ];
+
+    let quizState = { index: 0, score: 0, answered: false };
+    const startBtn = document.getElementById('startQuizBtn');
+    const quizCard = document.getElementById('quizCard');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const nextBtn = document.getElementById('nextBtn');
+    const quizProgress = document.getElementById('quizProgress');
+    const quizResult = document.getElementById('quizResult');
+    const quizScore = document.getElementById('quizScore');
+    const quizHigh = document.getElementById('quizHigh');
+    const resetHighBtn = document.getElementById('resetHighBtn');
+
+    function initQuiz() {
+        const high = localStorage.getItem('quizHighScore');
+        quizHigh.textContent = high ? `Nilai tertinggi: ${high}` : 'Nilai tertinggi: -';
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        resetHighBtn.addEventListener('click', function() {
+            localStorage.removeItem('quizHighScore');
+            quizHigh.textContent = 'Nilai tertinggi: -';
+        });
+    }
+
+    function startQuiz() {
+        quizState = { index: 0, score: 0, answered: false };
+        quizResult.style.display = 'none';
+        quizCard.style.display = 'block';
+        startBtn.textContent = 'Mulai Lagi';
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const q = quizData[quizState.index];
+        quizQuestion.textContent = `${quizState.index + 1}. ${q.q}`;
+        quizOptions.innerHTML = '';
+        q.a.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
+            btn.textContent = opt;
+            btn.dataset.idx = i;
+            btn.addEventListener('click', () => selectOption(btn, i));
+            quizOptions.appendChild(btn);
+        });
+        quizProgress.textContent = `${quizState.index + 1} / ${quizData.length}`;
+        nextBtn.disabled = true;
+        quizState.answered = false;
+    }
+
+    function selectOption(btn, idx) {
+        if (quizState.answered) return;
+        quizState.answered = true;
+        const current = quizData[quizState.index];
+        const correctIdx = current.correct;
+        // mark options
+        Array.from(quizOptions.children).forEach(ch => {
+            ch.disabled = true;
+            if (parseInt(ch.dataset.idx) === correctIdx) ch.classList.add('correct');
+            if (ch === btn && parseInt(btn.dataset.idx) !== correctIdx) btn.classList.add('wrong');
+        });
+        if (idx === correctIdx) quizState.score += 1;
+        nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+        quizState.index += 1;
+        if (quizState.index >= quizData.length) {
+            finishQuiz();
+            return;
+        }
+        renderQuestion();
+    }
+
+    function finishQuiz() {
+        quizCard.style.display = 'none';
+        quizResult.style.display = 'block';
+        quizScore.textContent = `Skor: ${quizState.score} / ${quizData.length}`;
+        const prevHigh = parseInt(localStorage.getItem('quizHighScore') || '0');
+        if (quizState.score > prevHigh) {
+            localStorage.setItem('quizHighScore', quizState.score);
+            quizHigh.textContent = `Nilai tertinggi: ${quizState.score}`;
+            // celebrate new high score
+            celebrate();
+        } else {
+            quizHigh.textContent = prevHigh ? `Nilai tertinggi: ${prevHigh}` : 'Nilai tertinggi: -';
+        }
+    }
+
+    // Simple celebration: brief confetti animation (small colored circles)
+    function celebrate() {
+        const colors = ['#f39c12','#e74c3c','#27ae60','#1da1f2','#2c3e50'];
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.left = '0';
+        wrapper.style.top = '0';
+        wrapper.style.width = '100%';
+        wrapper.style.height = '100%';
+        wrapper.style.pointerEvents = 'none';
+        wrapper.style.zIndex = 9999;
+        document.body.appendChild(wrapper);
+
+        for (let i=0;i<20;i++) {
+            const c = document.createElement('div');
+            const size = 8 + Math.random()*12;
+            c.style.width = c.style.height = size + 'px';
+            c.style.background = colors[Math.floor(Math.random()*colors.length)];
+            c.style.borderRadius = '50%';
+            c.style.position = 'absolute';
+            c.style.left = (40 + Math.random()*50) + '%';
+            c.style.top = '20%';
+            c.style.opacity = '0.95';
+            c.style.transform = `translateY(0) scale(0.9)`;
+            c.style.transition = `transform 1200ms cubic-bezier(.2,.8,.2,1), opacity 1200ms`;
+            wrapper.appendChild(c);
+            // animate with slight delay
+            setTimeout(()=>{
+                const dx = (Math.random()-0.5)*60;
+                const dy = 200 + Math.random()*220;
+                const rot = (Math.random()-0.5)*720;
+                c.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg) scale(1)`;
+                c.style.opacity = '0';
+            }, 20 + i*30);
+        }
+
+        // remove wrapper after animation
+        setTimeout(()=>{ wrapper.remove(); }, 1600);
+    }
 </script>
 </html>
